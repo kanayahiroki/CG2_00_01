@@ -1,17 +1,22 @@
-struct Material
-{
-    float32_t4 color;
-};
-ConstantBuffer<Material> gMaterial : register(b0);
+#include "object3d.hlsli"
 
-struct PixelShaderOutput
+struct TransformationMatrix
 {
-    float32_t4 color : SV_TARGET0;
+    float32_t4x4 WVP;
+};
+ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
+
+
+struct VertexShaderInput
+{
+    float32_t4 position : POSITION0;
+    float32_t2 texcoord : TEXCOORD0;
 };
 
-PixelShaderOutput main()
+VertexShaderOutput main(VertexShaderInput input)
 {
-    PixelShaderOutput output;
-    output.color = gMaterial.color;
+    VertexShaderOutput output;
+    output.position = mul(input.position, gTransformationMatrix.WVP);
+    output.texcoord = input.texcoord;
     return output;
 }
