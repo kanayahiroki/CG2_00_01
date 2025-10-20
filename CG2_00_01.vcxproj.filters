@@ -16,6 +16,27 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{bcef415f-1a91-4bf5-b320-567ddaffc2f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\2d">
+      <UniqueIdentifier>{d065902d-bd1b-48f8-8985-20a41834ef2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3d">
+      <UniqueIdentifier>{4b0de6bf-960c-4f24-9d17-af8e6d015f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{97fa5311-02b7-4b12-969f-120e25226891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3d\audio">
+      <UniqueIdentifier>{fbd18061-114e-48dc-9bb2-4e3d85ab3624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\io">
+      <UniqueIdentifier>{90ea94f3-ccec-4c24-917a-8eefb10a6792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\math">
+      <UniqueIdentifier>{865e2f4c-4450-48bd-8bfb-7544ef0a87a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\math\scene">
+      <UniqueIdentifier>{868706eb-68c4-4527-807d-d7691329be03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
