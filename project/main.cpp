@@ -21,6 +21,7 @@
 #include <xaudio2.h>
 #define DIRECTINPUT_VERSION   0x0800 //DirectInput
 #include <dinput.h>
+#include "Input.h"
 
 
 
@@ -850,7 +851,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	D3DResourceLeakChecker leakCheck;
 
 
-
 	// COMの初期化
 	CoInitializeEx(0, COINIT_MULTITHREADED);
 
@@ -1004,23 +1004,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//音声再生
 	SoundPlayWave(xAudio2.Get(), soundData1);
 
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(wc.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
-
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	assert(SUCCEEDED(result));
-
-	//入力データ形式のセット
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
+	
 
 #pragma endregion
 
@@ -1254,7 +1238,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 
+	//ポインタ
+	Input* input = nullptr;
 
+	//入力の初期化
+	input = new Input();
+	input->Initialize(wc.hInstance, hwnd);
+
+
+	
 
 
 #pragma region PSO
@@ -1775,11 +1767,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			// 開発用UIの処理。実際に開発用のUIを出す場合はここをゲーム固有の処理に置き換える
 			ImGui::ShowDemoWindow();
 
-			//キーボード情報の取得開始
-			keyboard->Acquire();
-			//全キーの入力状態を取得する
-			BYTE key[256] = {};
-			keyboard->GetDeviceState(sizeof(key), key);
+			// 入力情報の更新
+			input->Update();
 
 			// ゲームの処理
 
@@ -1851,7 +1840,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//数字の0キーが押されていたら
-			if (key[DIK_W])
+			if (input->PushKey(DIK_W))
 			{
 				OutputDebugStringA("Hit 0\n");//出力ウィンドウに「Hit 0」と表示
 				transformSprite.translate.x += 5.0f;
@@ -1999,6 +1988,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #endif // _DEBUG
 	CloseWindow(hwnd);
 #pragma endregion
+
+	//入力の解放
+	delete input;
 
 	//xAudio2解放
 	xAudio2.Reset();
