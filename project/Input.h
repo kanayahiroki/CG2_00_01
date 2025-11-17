@@ -3,6 +3,7 @@
 #include <wrl.h>
 #define DIRECTINPUT_VERSION  0x0800 //DirectInputのバージン指定
 #include <dinput.h>
+#include "WinApp.h"
 
 
 
@@ -10,7 +11,7 @@ class Input
 {
 public:
 
-	void Initialize(HINSTANCE histance, HWND hwnd);
+	void Initialize(WinApp* winApp);
 
 	void Update();
 
@@ -21,6 +22,10 @@ public:
 	//namespace省略
 	template <class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 private://メンバ変数
+
+	//WindowsAPI
+	WinApp* winApp_ = nullptr;
+
 	//キーボードのデバイス
 	ComPtr<IDirectInputDevice8> keyboard;
 
