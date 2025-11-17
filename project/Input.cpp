@@ -4,17 +4,18 @@
 //#define DIRECTINPUT_VERSION  0x0800 //DirectInputのバージン指定
 //#include <dinput.h>
 
+
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
 //using namespace Microsoft::WRL;
 
-void Input::Initialize(HINSTANCE histance, HWND hwnd)
+void Input::Initialize(WinApp* winApp)
 {
 	HRESULT result;
 	//DirectInputの初期化
 	//ComPtr<IDirectInput8> directInput = nullptr;
-	result = DirectInput8Create(histance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+	result = DirectInput8Create(winApp->GetHinstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
 	//キーボードデバイスの生成
@@ -27,7 +28,7 @@ void Input::Initialize(HINSTANCE histance, HWND hwnd)
 	assert(SUCCEEDED(result));
 
 	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	result = keyboard->SetCooperativeLevel(winApp->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 
 }
