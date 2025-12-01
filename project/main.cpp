@@ -23,6 +23,7 @@
 #include <dinput.h>
 #include "Input.h"
 #include "WinApp.h"
+#include "DirectXCommon.h"
 
 
 #include "externals/imgui//imgui.h"
@@ -844,6 +845,16 @@ void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData) {
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+
+	//ポインタ
+	DirectXCommon* dxCommon = nullptr;
+
+	//DirectXの初期化
+	dxCommon = new DirectXCommon();
+	dxCommon->Initialize();
+
+	
+
 
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;
@@ -1959,7 +1970,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #endif // _DEBUG
 #pragma endregion
 
-
+	//DirectX解放
+	delete dxCommon;
 
 	//WindowsAPIの終了処理
 	winApp->Finalize();
@@ -1967,6 +1979,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//WindowsAPI解放
 	delete winApp;
 	winApp = nullptr;
+
+	//
 
 	//入力の解放
 	delete input;
