@@ -1,3 +1,4 @@
+
 #pragma once
 #include <windows.h>
 #include <wrl.h>
@@ -7,34 +8,34 @@
 class WinApp
 {
 public:
-    static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 public://メンバ関数
-    //初期化
-    void Initialize();
+	//初期化
+	void Initialize();
 
-    //更新
-    void Update();
+	//更新
+	void Update();
 
-    // クライアント領域サイズ
-    static const int32_t kClientWidth = 1280;
-    static const int32_t kClientHeight = 720;
+	// クライアント領域サイズ
+	static const int32_t kClientWidth = 1280;
+	static const int32_t kClientHeight = 720;
 
-    //getter
-    HWND GetHwnd() const { return hwnd; }
+	//getter
+	HWND GetHwnd() const { return hwnd; }
 
-    //getter
-    HINSTANCE GetHinstance() const { return wc.hInstance; }
+	//getter
+	HINSTANCE GetHinstance() const { return wc.hInstance; }
 
-    //終了
-    void Finalize();
+	//終了
+	void Finalize();
 
-    bool ProcessMessage();
+	bool ProcessMessage();
 private:
-    //ウィンドウハンドル
-    HWND hwnd = nullptr;
+	//ウィンドウハンドル
+	HWND hwnd = nullptr;
 
-    //ウィンドウクラスの設定
-    WNDCLASS wc{};
+	//ウィンドウクラスの設定
+	WNDCLASS wc{};
 
 };

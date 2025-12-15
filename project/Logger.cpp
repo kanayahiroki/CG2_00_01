@@ -1,9 +1,16 @@
-namespace Logger 
+#include "Logger.h"
+#include <Windows.h>
+
+
+namespace Logger
 {
-	void Log(const std::string& message)
-	{
-		// ここではコンソールにログを出力する例を示します
-		// 実際の実装では、ファイルに書き込むなど、他の方法も考えられます
-		std::cout << message << std::endl;
-	}
+    void Log(const std::string& message) {
+        OutputDebugStringA(message.c_str());
+    }
+
+    // ログファイルを書き出す
+    void Log(std::ostream& os, const std::string& message) {
+        os << message << std::endl;
+        OutputDebugStringA(message.c_str());
+    }
 }

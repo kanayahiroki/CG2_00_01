@@ -1,15 +1,40 @@
+
 #include "WinApp.h"
-#include <windows.h>
 #include <cassert>
-#include <objbase.h>
-#include <iostream>
-#include <cstdint>
+
+#include "externals/imgui//imgui.h"
+
+#pragma comment(lib,"winmm.lib")
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+
+// ウィンドウプロシーシャ
+LRESULT CALLBACK WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
+
+		return true;
+	}
+
+	// メッセージに応じてゲーム固有の処理を行う
+	switch (msg) {
+		// ウィンドウが破壊された
+	case WM_DESTROY:
+		// OSに対して、アプリの終了を伝える
+		PostQuitMessage(0);
+
+		return 0;
+	}
+	// 標準のメッセージ処理を行う
+	return DefWindowProc(hwnd, msg, wparam, lparam);
+
+}
 
 void WinApp::Initialize()
 {
+	// COMの初期化
 	HRESULT hr = CoInitializeEx(0, COINIT_MULTITHREADED);
-
-	//WNDCLASS wc{};
 	// ウィンドウプロシーシャ
 	wc.lpfnWndProc = WindowProc;
 	// ウィンドウクラス名（なんでもいい）
@@ -20,8 +45,6 @@ void WinApp::Initialize()
 	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 
 	RegisterClass(&wc);
-
-	
 
 	//ウィンドウサイズを表す構造体にクライアント領域を入れる
 	RECT wrc = { 0,0,kClientWidth,kClientHeight };
@@ -45,42 +68,31 @@ void WinApp::Initialize()
 	);
 	// ウィンドウを表示
 	ShowWindow(hwnd, SW_SHOW);
+
+	//システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
 }
+
 void WinApp::Update()
 {
-	//メッセージ処理
-}
-void WinApp::Finalize()
-{
-	CloseWindow(hwnd);
-	// COMライブラリの終了
-	CoUninitialize();
-}
-LRESULT CALLBACK WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-{
-	// メッセージに応じて対応した処理を行う
-	switch (msg)
-	{
-	case WM_DESTROY: // ウィンドウが閉じられたら
-		// OSに対して、このプログラムの終了を伝える
-		PostQuitMessage(0);
-		return 0;
-	}
 
-	// 上記以外のメッセージは、デフォルトのプロシージャに処理を任せる
-	return DefWindowProc(hwnd, msg, wparam, lparam);
+}
+
+void WinApp::Finalize() {
+	CloseWindow(hwnd);
+	// COMの終了処理
+	CoUninitialize();
 }
 
 bool WinApp::ProcessMessage()
 {
-
 	MSG msg{};
 
 	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
-
 	}
+
 	if (msg.message == WM_QUIT)
 	{
 		return true;
