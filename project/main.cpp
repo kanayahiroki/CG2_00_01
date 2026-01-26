@@ -35,6 +35,8 @@
 #include "externals/DirectXTex/d3dx12.h"
 			 
 #include "externals/DirectXTex/DirectXTex.h"
+#include "SpriteCommon.h"
+#include "Sprite.h"
 
 
 
@@ -640,6 +642,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	winApp->Initialize();
 
+
+	SpriteCommon* spriteCommon = nullptr;
+
+	// SpriteCommonの初期化
+	spriteCommon = new SpriteCommon();
+	spriteCommon->Initialize();
+
 	
 #pragma endregion
 
@@ -698,6 +707,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 #pragma endregion
 
+
+#pragma region 最初のシーンの初期化
+
+	Sprite* sprite = new Sprite();
+	sprite->Initialize();
+
+#pragma endregion 最初のシーンの初期化の終了
 
 
 #ifdef _DEBUG
