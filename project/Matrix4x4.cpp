@@ -1,3 +1,4 @@
+
 #define _USE_MATH_DEFINES 
 #include "Matrix4x4.h"
 #include <math.h>
@@ -30,7 +31,7 @@ Matrix4x4 MatrixMath::Subtract(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return result;
 }
 // 4x4行列の積
-Matrix4x4 MatrixMath::Multipty(const Matrix4x4& m1, const Matrix4x4& m2) {
+Matrix4x4 MatrixMath::Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result;
 
 	for (int row = 0; row < 4; ++row) {
@@ -208,13 +209,13 @@ Matrix4x4 MatrixMath::MakeAffine(const Vector3& scale, const Vector3& rotate, co
 	// Z軸の回転行列を生成
 	Matrix4x4 rotateZMatrix = MakeRotateZ(rotate.z);
 	// X軸、Y軸、Z軸の順に回転を合成
-	Matrix4x4 rotateXYZMatrix = Multipty(Multipty(rotateXMatrix, rotateYMatrix), rotateZMatrix);
+	Matrix4x4 rotateXYZMatrix = Multiply(Multiply(rotateXMatrix, rotateYMatrix), rotateZMatrix);
 
 	// 平行移動を生成
 	Matrix4x4 translateMatrix = MakeTranslate(translate);
 
 	// 最終的なアフィン変換行列： T * R * S
-	result = Multipty(Multipty(scaleMatrix, rotateXYZMatrix), translateMatrix);
+	result = Multiply(Multiply(scaleMatrix, rotateXYZMatrix), translateMatrix);
 
 
 

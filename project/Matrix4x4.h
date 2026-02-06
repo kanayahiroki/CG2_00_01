@@ -1,11 +1,10 @@
+
 #pragma once
+#include "Vector3.h"
 
 struct Matrix4x4 {
 
 	float m[4][4];
-};
-struct Vector3 {
-	float x, y, z;
 };
 
 namespace MatrixMath {
@@ -14,7 +13,7 @@ namespace MatrixMath {
 	// 行列の減法
 	Matrix4x4 Subtract(const Matrix4x4& m1, const Matrix4x4& m2);
 	// 行列の積
-	Matrix4x4 Multipty(const Matrix4x4& m1, const Matrix4x4& m2);
+	Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 	// 逆行列
 	Matrix4x4 Inverse(const Matrix4x4& m);
 	// 転置行列

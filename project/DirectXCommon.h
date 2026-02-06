@@ -1,3 +1,4 @@
+
 #pragma once
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -81,6 +82,10 @@ public://メンバ関数
 	Microsoft::WRL::ComPtr<ID3D12Resource>UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 
 	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
+	//最大SRV数(最大テクスチャ枚数)
+	static const uint32_t kMaxSRVCount;
+
 
 private:
 	WinApp* winApp = nullptr;
